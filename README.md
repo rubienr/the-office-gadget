@@ -4,8 +4,9 @@ A very simple tool to visualize things having
 * wifi,
 * display,
 * touch keyboard,
-* temperature sensor and
-* light sensor.
+* temperature sensor,
+* light sensor and
+* serial interfaced RGB LED strips.
 
 <p align="center">
   <img src="https://github.com/rubienr/the_office_gadget/blob/master/docs/tog.jpg?raw=true" width="350"/>
