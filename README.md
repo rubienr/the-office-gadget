@@ -15,5 +15,6 @@ A very simple tool to visualize things having
 ```
 git clone https://github.com/rubienr/the_office_gadget.git
 cd the_office_gadget/src/src
-platformio init --clion
+platformio init --ide clion
 ```
+Then: Clion -> open project -> navigate to `the_office_gadget/src/` -> open.
