@@ -7,7 +7,7 @@
 
 extern Ressources r;
 
-const uint16_t Keyboard::OnHoldDurationMs = 50git 0;
+const uint16_t Keyboard::OnHoldDurationMs = 500;
 const uint16_t Keyboard::OnHoldRepeatMs   = 250;
 
 ButtonCallback::~ButtonCallback()
