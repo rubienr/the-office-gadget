@@ -1,8 +1,9 @@
 # The Office Gadget
 A very simple tool to visualize things having
 
-* oled display,
-* ouch keyboard,
+* wifi,
+* display,
+* touch keyboard,
 * temperature sensor and
 * light sensor.
 
