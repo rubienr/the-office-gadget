@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(nightly-test-monitor)
+project(src)
 
 include(CMakeListsPrivate.txt)
 

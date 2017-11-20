@@ -1,1 +1,14 @@
-# the_office_gadget
+# The Office Gadget
+A very simple tool to visualize things having
+
+* oled display,
+* ouch keyboard,
+* temperature sensor and
+* light sensor.
+
+# Start Working
+```
+git clone https://github.com/rubienr/the_office_gadget.git
+cd the_office_gadget/src/src
+platformio init --clion
+```
