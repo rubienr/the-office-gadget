@@ -6,15 +6,15 @@
 
 #include <Button.h>
 
-typedef Button BrainfuckedImplementedButton;
+typedef Button PerfectExampleOnHowToNotRapeCPP;
 
 #include <ButtonEventCallback.h>
 #include <MPR121Button.h>
 
-typedef MPR121Button NextBrainfuckedCandidate;
+typedef MPR121Button NextFishyCandidate;
 
 #include <Adafruit_MPR121.h>
-#include "I2cBus.h"
+#include "../ressources/I2cBusConfig.h"
 
 class ButtonCallback
 {
@@ -109,7 +109,7 @@ private:
 
 public:
     const uint8_t i2cAddress;
-    const I2cBus& i2cBus;
+    const I2cBusConfig& i2cBus;
 
     ButtonEventProxy button0;
     ButtonEventProxy button1;
@@ -125,7 +125,7 @@ public:
     ButtonEventProxy button11;
     ButtonEventProxy button12;
 
-    Keyboard(const I2cBus& i2cBus);
+    Keyboard(const I2cBusConfig& i2cBus);
     virtual ~Keyboard();
     void init();
     void update();

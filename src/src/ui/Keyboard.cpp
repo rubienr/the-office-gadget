@@ -3,7 +3,7 @@
 //
 
 #include "Keyboard.h"
-#include "Ressources.h"
+#include "../ressources/Ressources.h"
 
 extern Ressources r;
 
@@ -46,7 +46,7 @@ void ButtonEventConsumer::onRepeat(uint8_t buttonId, uint16_t elapsedTime, uint1
     buttonEventCount  = repeatCount;
 }
 
-Keyboard::Keyboard(const I2cBus& i2cBus) :
+Keyboard::Keyboard(const I2cBusConfig& i2cBus) :
     buttonCb0(*this, 0),
     buttonCb1(*this, 1),
     buttonCb2(*this, 2),

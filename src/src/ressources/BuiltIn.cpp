@@ -8,12 +8,12 @@
 
 void BuiltIn::ledOn()
 {
-    digitalWrite(BUILTIN_LED, true);
+    digitalWrite(BUILTIN_LED, false);
 }
 
 void BuiltIn::ledOff()
 {
-    digitalWrite(BUILTIN_LED, false);
+    digitalWrite(BUILTIN_LED, true);
 }
 
 void BuiltIn::ledToggle()
@@ -24,4 +24,5 @@ void BuiltIn::ledToggle()
 void BuiltIn::init()
 {
     pinMode(BUILTIN_LED, OUTPUT);
+    ledOff();
 }

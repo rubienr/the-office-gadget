@@ -4,9 +4,13 @@
 
 #include "Sensors.h"
 
-Sensors::Sensors(const I2cBus& i2cBus) :
-    i2cBus(i2cBus),
-    oneWire(D4),
+#include "../ressources/I2cBusConfig.h"
+#include "../ressources/OneWireBusConfig.h"
+
+Sensors::Sensors(const I2cBusConfig& i2cBusConfig, const OneWireBusConfig &oneWireBusConfig) :
+    i2cBusConfig(i2cBusConfig),
+    oneWireBusConfig(oneWireBusConfig),
+    oneWire(oneWireBusConfig.sdaPin),
     temperatureSensors(&oneWire),
     temperatureSensor0Address(0xff),
     lightSensorAddress(0x23),

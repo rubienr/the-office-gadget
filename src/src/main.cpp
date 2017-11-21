@@ -2,12 +2,7 @@
 // Created by rubienr on 08/11/17.
 //
 
-//#include <Wire.h>
-#include "types/Ressources.h"
-//#include <SSD1306.h>
-//#include <FastLED.h>
-#include "wifi/Wifi.h"
-#include "esp/esp.h"
+#include "ressources/Ressources.h"
 
 Ressources r;
 
@@ -28,16 +23,17 @@ CRGBPalette16 gPal = HeatColors_p;
 void Fire2012WithPalette()
 {
 // Array of temperature readings at each simulation cell
-    static byte heat[r.ledStrip.numLeds];
+    const uint8_t ledsCount = sizeof(r.ledStrip.leds) / sizeof(CRGB);
+    static byte heat[ledsCount];
 
     // Step 1.  Cool down every cell a little
-    for (int i = 0; i < r.ledStrip.numLeds; i++)
+    for (int i = 0; i < ledsCount; i++)
     {
-        heat[i] = qsub8(heat[i], random8(0, ((COOLING * 10) / r.ledStrip.numLeds) + 2));
+        heat[i] = qsub8(heat[i], random8(0, ((COOLING * 10) / ledsCount) + 2));
     }
 
     // Step 2.  Heat from each cell drifts 'up' and diffuses a little
-    for (int k = r.ledStrip.numLeds - 1; k >= 2; k--)
+    for (int k = ledsCount - 1; k >= 2; k--)
     {
         heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
     }
@@ -50,7 +46,7 @@ void Fire2012WithPalette()
     }
 
     // Step 4.  Map from heat cells to LED colors
-    for (int j = 0; j < r.ledStrip.numLeds; j++)
+    for (int j = 0; j < ledsCount; j++)
     {
         // Scale the heat value from 0-255 down to 0-240
         // for best results with color palettes.
@@ -59,7 +55,7 @@ void Fire2012WithPalette()
         int  pixelnumber;
         if (gReverseDirection)
         {
-            pixelnumber = (r.ledStrip.numLeds - 1) - j;
+            pixelnumber = (ledsCount - 1) - j;
         }
         else
         {
@@ -71,24 +67,23 @@ void Fire2012WithPalette()
 
 void setup()
 {
+    ESP.wdtDisable();
     r.init();
-    r.builtin.ledOn();
-
-    /*initEsp(true);
-    r.display->println("Office Gadget Started");
-    printEspInfo();
-    r.display->println("WiFi: enabling...");
-    initWifi();
-     */
+    r.builtin.ledOff();
+    ESP.wdtEnable(0);
 }
 
 void loop()
 {
-    Fire2012WithPalette(); // run simulation frame, using palette colors
-    r.ledStrip.fastLED.show(); // display this frame
-    //r.ledStrip.fastLED.delay(1000 / 60);
+    r.builtin.ledOff();
+    Fire2012WithPalette();
+    r.ledStrip.fastLED.show();
     r.sensors.measureTemperature();
     r.keyboard.update();
+
+    r.builtin.ledOn();
+    yield();
+    r.builtin.ledOff();
 
     r.displays.display0.clear();
     r.displays.display0.print("The office gadget!\n");
@@ -101,12 +96,18 @@ void loop()
     r.displays.display0.drawLogBuffer(0, 0);
     r.displays.display0.display();
 
+    r.builtin.ledOn();
+    yield();
+    r.builtin.ledOff();
+
     r.displays.display1.clear();
-    r.displays.display0.print("Keyboard Events\n");
+    r.displays.display1.print("Keyboard Events\n");
     r.displays.display1.printf("pressed  %d\n", r.keyboard.buttonPressed);
     r.displays.display1.printf("released %d\n", r.keyboard.buttonReleased);
     r.displays.display1.printf("repeated %d\n", r.keyboard.buttonRepeated);
     r.displays.display1.printf("delay    %d count %d\n", r.keyboard.buttonElapsedTime, r.keyboard.buttonEventCount);
     r.displays.display1.drawLogBuffer(0, 0);
     r.displays.display1.display();
+
+    r.builtin.ledOn();
 }

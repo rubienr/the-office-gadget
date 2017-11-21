@@ -8,7 +8,8 @@
 #include <BH1750.h>
 #include <DallasTemperature.h>
 
-#include "I2cBus.h"
+class I2cBusConfig;
+class OneWireBusConfig;
 
 class Sensors
 {
@@ -21,11 +22,12 @@ public:
     DallasTemperature temperatureSensors;
     uint8_t           temperatureSensor0Address;
 
-    const I2cBus& i2cBus;
+    const I2cBusConfig    & i2cBusConfig;
+    const OneWireBusConfig& oneWireBusConfig;
     uint8_t lightSensorAddress;
     BH1750  lightSensor;
 
-    Sensors(const I2cBus& i2cBus);
+    Sensors(const I2cBusConfig& i2cBusConfig, const OneWireBusConfig& oneWireBusConfig);
 
     void measureTemperature();
 

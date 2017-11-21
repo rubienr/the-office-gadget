@@ -5,8 +5,8 @@
 #include "Wifi.h"
 
 #include <Arduino.h>
-#include <SoftwareSerial.h>
 #include <ESP8266WiFi.h>
+#include <Print.h>
 
 const char* Wifi::EncryptionTypeToNameTranslation[]
               {
@@ -22,7 +22,8 @@ const char* Wifi::EncryptionTypeToNameTranslation[]
                   "9"
               };
 
-Wifi::Wifi()
+Wifi::Wifi(Print &out) :
+    out(out)
 {
 }
 
@@ -37,8 +38,8 @@ const char* Wifi::encryptionTypeToName(uint8_t encyptionTypeId)
 
 void Wifi::printNetworksCallback(int8_t numNetworksFound)
 {
-    Serial.printf("%"PRIi8" networks found\n", numNetworksFound);
-    Serial.println("SSID CHANNEL RSSI[dBm] ENC_TYPE MAC HIDDEN");
+    out.printf("%"PRIi8" networks found\n", numNetworksFound);
+    out.println("SSID CHANNEL RSSI[dBm] ENC_TYPE MAC HIDDEN");
     --numNetworksFound;
 
     for (int8_t i = numNetworksFound; i >= 0; --i)
@@ -60,7 +61,7 @@ void Wifi::printNetworksCallback(int8_t numNetworksFound)
             bssid = nbssid;
         }
 
-        Serial.printf(
+        out.printf(
             "# %"PRIi8" ss %s ch %"PRIi16" rs  %"PRIi16" enc %s >%"PRIu16"< mac %02x:%02x:%02x:%02x:%02x:%02x hidden  %"PRIu8"\n",
             i + 1,
             ssid.c_str(),
@@ -79,24 +80,24 @@ void Wifi::printNetworksCallback(int8_t numNetworksFound)
     }
 }
 
-void Wifi::enableWifi(void)
+void Wifi::enable(void)
 {
     WiFi.mode(WIFI_STA);
     WiFi.disconnect();
 }
 
-void Wifi::initWifi(void)
+void Wifi::init(void)
 {
-    enableWifi();
-    Serial.println("WiFi diagnostic");
-    WiFi.printDiag(Serial);
+    enable();
+    out.println("WiFi diagnostic");
+    WiFi.printDiag(out);
 }
 
-void Wifi::scanWifi(void)
+void Wifi::scan(void)
 {
     int8_t numNetworksScanned = WiFi.scanNetworks();
     while (WiFi.scanComplete() < 0);
     printNetworksCallback(numNetworksScanned);
     WiFi.scanDelete();
-    Serial.println("\n");
+    out.println("\n");
 }

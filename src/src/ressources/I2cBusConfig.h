@@ -6,7 +6,7 @@
 
 #include <inttypes.h>
 
-class I2cBus
+class I2cBusConfig
 {
 protected:
 
@@ -16,5 +16,5 @@ public:
     uint8_t sclPin;
     uint8_t sdaPin;
 
-    I2cBus(uint8_t sclPin, uint8_t sdaPin);
+    I2cBusConfig(uint8_t sclPin, uint8_t sdaPin);
 };

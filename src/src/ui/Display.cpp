@@ -6,7 +6,7 @@
 
 #include <SSD1306.h>
 
-DisplayCombo::DisplayCombo(const I2cBus& i2cBus) :
+DisplayCombo::DisplayCombo(const I2cBusConfig& i2cBus) :
     display0(0x3c, i2cBus.sdaPin, i2cBus.sclPin),
     display1(0x3d, i2cBus.sdaPin, i2cBus.sclPin)
 {

@@ -6,19 +6,22 @@
 
 #include <inttypes.h>
 
+class Print;
+
 class Wifi
 {
-protected:
-
 private:
     static const char* EncryptionTypeToNameTranslation[];
     const char* encryptionTypeToName(uint8_t encyptionTypeId);
     void printNetworksCallback(int8_t numNetworksFound);
 
-public:
-    void scanWifi(void);
-    void enableWifi(void);
-    void initWifi(void);
+protected:
+    Print &out;
 
-    Wifi();
+public:
+    void scan(void);
+    void enable(void);
+    void init(void);
+
+    Wifi(Print &serial);
 };
