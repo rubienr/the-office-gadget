@@ -6,13 +6,14 @@
 
 class Print;
 
-class Esp {
+class Esp
+{
 private:
-    Print &out;
+    Print& out;
 protected:
 
 public:
-    Esp(Print& serial);
+    explicit Esp(Print& serial);
     void init(bool earaseConfigutation = false);
     void printInfo();
 };

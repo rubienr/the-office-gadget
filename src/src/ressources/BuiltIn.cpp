@@ -3,22 +3,22 @@
 //
 
 #include "BuiltIn.h"
-
+#include <inttypes.h>
 #include <Arduino.h>
 
 void BuiltIn::ledOn()
 {
-    digitalWrite(BUILTIN_LED, false);
+    digitalWrite(BUILTIN_LED, 0);
 }
 
 void BuiltIn::ledOff()
 {
-    digitalWrite(BUILTIN_LED, true);
+    digitalWrite(BUILTIN_LED, 1);
 }
 
 void BuiltIn::ledToggle()
 {
-    digitalWrite(BUILTIN_LED, (0x01 & ~digitalRead(BUILTIN_LED)));
+    digitalWrite(BUILTIN_LED, static_cast<uint8_t>(0x01 & ~digitalRead(BUILTIN_LED)));
 }
 
 void BuiltIn::init()

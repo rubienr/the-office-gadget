@@ -8,6 +8,17 @@
 
 #include "../ressources/I2cBusConfig.h"
 
+class Display : public SSD1306
+{
+private:
+
+protected:
+
+public:
+    Display(uint8_t _address, uint8_t _sda, uint8_t _scl);
+    void displayBuffer();
+};
+
 class DisplayCombo
 {
 private:
@@ -15,9 +26,9 @@ private:
 protected:
 
 public:
-    SSD1306 display0;
-    SSD1306 display1;
+    Display display0;
+    Display display1;
 
-    DisplayCombo(const I2cBusConfig& i2cBus);
+    explicit DisplayCombo(const I2cBusConfig& i2cBus);
     void init();
 };

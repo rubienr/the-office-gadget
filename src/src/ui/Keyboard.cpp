@@ -10,9 +10,7 @@ extern Ressources r;
 const uint16_t Keyboard::OnHoldDurationMs = 500;
 const uint16_t Keyboard::OnHoldRepeatMs   = 250;
 
-ButtonCallback::~ButtonCallback()
-{
-}
+ButtonCallback::~ButtonCallback() = default;
 
 ButtonEventConsumer::ButtonEventConsumer() :
     buttonPressed(0),
@@ -24,9 +22,7 @@ ButtonEventConsumer::ButtonEventConsumer() :
 {
 }
 
-ButtonEventConsumer::~ButtonEventConsumer()
-{
-}
+ButtonEventConsumer::~ButtonEventConsumer() = default;
 
 void ButtonEventConsumer::onPress(uint8_t buttonId)
 {
@@ -44,6 +40,29 @@ void ButtonEventConsumer::onRepeat(uint8_t buttonId, uint16_t elapsedTime, uint1
     buttonRepeated    = buttonId;
     buttonElapsedTime = elapsedTime;
     buttonEventCount  = repeatCount;
+}
+
+ButtonEventProxy::~ButtonEventProxy() = default;
+
+ButtonEventProxy::ButtonEventProxy(uint8_t buttonId, ButtonEventConsumer& eventConsumer) :
+    eventConsumer(eventConsumer),
+    buttonId(buttonId)
+{
+}
+
+void ButtonEventProxy::onPress()
+{
+    eventConsumer.onPress(buttonId);
+}
+
+void ButtonEventProxy::onRelease(uint16_t elapsedTime)
+{
+    eventConsumer.onRelease(buttonId, elapsedTime);
+}
+
+void ButtonEventProxy::onRepeat(uint16_t elapsedTime, uint16_t repeatCount)
+{
+    eventConsumer.onRepeat(buttonId, elapsedTime, repeatCount);
 }
 
 Keyboard::Keyboard(const I2cBusConfig& i2cBus) :
@@ -78,9 +97,7 @@ Keyboard::Keyboard(const I2cBusConfig& i2cBus) :
 {
 }
 
-Keyboard::~Keyboard()
-{
-}
+Keyboard::~Keyboard() = default;
 
 void Keyboard::init()
 {

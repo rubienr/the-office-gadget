@@ -6,7 +6,6 @@
 
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
-#include <Print.h>
 
 const char* Wifi::EncryptionTypeToNameTranslation[]
               {
@@ -22,7 +21,7 @@ const char* Wifi::EncryptionTypeToNameTranslation[]
                   "9"
               };
 
-Wifi::Wifi(Print &out) :
+Wifi::Wifi(Print& out) :
     out(out)
 {
 }
@@ -48,15 +47,15 @@ void Wifi::printNetworksCallback(int8_t numNetworksFound)
         String  ssid;
         uint8_t encryptionType;
         int32_t rssi, channel;
-        bool    isHidden;
+        bool isHidden;
 
-        if (false == WiFi.getNetworkInfo(i, ssid, encryptionType, rssi, bssid, channel, isHidden))
+        if (false == WiFi.getNetworkInfo(static_cast<int8_t>(i), ssid, encryptionType, rssi, bssid, channel, isHidden))
         {
             continue;
         }
 
         uint8_t nbssid[] = {0, 0, 0, 0, 0, 0};
-        if (bssid == NULL)
+        if (bssid == nullptr)
         {
             bssid = nbssid;
         }
@@ -80,24 +79,73 @@ void Wifi::printNetworksCallback(int8_t numNetworksFound)
     }
 }
 
-void Wifi::enable(void)
+void Wifi::enable()
 {
     WiFi.mode(WIFI_STA);
     WiFi.disconnect();
 }
 
-void Wifi::init(void)
+void Wifi::init()
 {
     enable();
     out.println("WiFi diagnostic");
     WiFi.printDiag(out);
 }
 
-void Wifi::scan(void)
+void Wifi::scan()
 {
     int8_t numNetworksScanned = WiFi.scanNetworks();
     while (WiFi.scanComplete() < 0);
     printNetworksCallback(numNetworksScanned);
     WiFi.scanDelete();
     out.println("\n");
+}
+
+void Wifi::connectAccesspoint(const char* ssid, const char* secret)
+{
+    if (WiFi.status() != WL_CONNECTED)
+    {
+        WiFi.mode(WIFI_STA);
+        WiFi.disconnect();
+        wl_status_t status = WiFi.begin(ssid, secret);
+        printConnectstatus(status, out);
+        while (WiFi.status() != WL_CONNECTED)
+        {
+            delay(500);
+            out.print(".");
+        }
+        out.printf("ip %s\n", WiFi.localIP().toString().c_str());
+    }
+}
+
+void Wifi::printConnectstatus(wl_status_t status, Print& out)
+{
+    const char* messagePrefix = "conn. stat. ";
+    switch (status)
+    {
+        case WL_NO_SHIELD:
+            break;
+
+        case WL_IDLE_STATUS:
+            out.printf("%s%s\n", messagePrefix, "WL_IDLE_STATUS");
+            break;
+        case WL_NO_SSID_AVAIL:
+            out.printf("%s%s\n", messagePrefix, "WL_NO_SSID_AVAIL");
+            break;
+        case WL_SCAN_COMPLETED:
+            out.printf("%s%s\n", messagePrefix, "WL_SCAN_COMPLETED");
+            break;
+        case WL_CONNECTED:
+            out.printf("%s%s\n", messagePrefix, "WL_CONNECTED");
+            break;
+        case WL_CONNECT_FAILED:
+            out.printf("%s%s\n", messagePrefix, "WL_CONNECT_FAILED");
+            break;
+        case WL_CONNECTION_LOST:
+            out.printf("%s%s\n", messagePrefix, "WL_CONNECTION_LOST");
+            break;
+        case WL_DISCONNECTED:
+            out.printf("%s%s\n", messagePrefix, "WL_DISCONNECTED");
+            break;
+    }
 }

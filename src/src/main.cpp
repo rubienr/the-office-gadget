@@ -24,7 +24,7 @@ void Fire2012WithPalette()
 {
 // Array of temperature readings at each simulation cell
     const uint8_t ledsCount = sizeof(r.ledStrip.leds) / sizeof(CRGB);
-    static byte heat[ledsCount];
+    static byte   heat[ledsCount];
 
     // Step 1.  Cool down every cell a little
     for (int i = 0; i < ledsCount; i++)
@@ -70,20 +70,20 @@ void setup()
     ESP.wdtDisable();
     r.init();
     r.builtin.ledOff();
+    r.displays.display0.println("connecting to <ssid>...");
+    r.displays.display0.displayBuffer();
+    r.wifi.connectAccesspoint("ssid", "secret");
+    r.displays.display0.println("done");
+    r.displays.display0.displayBuffer();
     ESP.wdtEnable(0);
 }
 
 void loop()
 {
-    r.builtin.ledOff();
     Fire2012WithPalette();
     r.ledStrip.fastLED.show();
     r.sensors.measureTemperature();
     r.keyboard.update();
-
-    r.builtin.ledOn();
-    yield();
-    r.builtin.ledOff();
 
     r.displays.display0.clear();
     r.displays.display0.print("The office gadget!\n");
@@ -92,13 +92,9 @@ void loop()
     r.displays.display0.print("°C\n");
     r.displays.display0.print("lux: ");
     r.displays.display0.print(r.sensors.currentLux());
-    r.displays.display0.print("\n\n\n");
-    r.displays.display0.drawLogBuffer(0, 0);
-    r.displays.display0.display();
-
-    r.builtin.ledOn();
-    yield();
-    r.builtin.ledOff();
+    r.displays.display0.printf("\nip-addr: %s\n", WiFi.localIP().toString().c_str());
+    r.wifi.printConnectstatus(WiFi.status(), r.displays.display0);
+    r.displays.display0.displayBuffer();
 
     r.displays.display1.clear();
     r.displays.display1.print("Keyboard Events\n");
@@ -106,8 +102,7 @@ void loop()
     r.displays.display1.printf("released %d\n", r.keyboard.buttonReleased);
     r.displays.display1.printf("repeated %d\n", r.keyboard.buttonRepeated);
     r.displays.display1.printf("delay    %d count %d\n", r.keyboard.buttonElapsedTime, r.keyboard.buttonEventCount);
-    r.displays.display1.drawLogBuffer(0, 0);
-    r.displays.display1.display();
+    r.displays.display1.displayBuffer();
 
-    r.builtin.ledOn();
+    r.webService.handleClient();
 }

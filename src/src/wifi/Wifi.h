@@ -6,6 +6,10 @@
 
 #include <inttypes.h>
 
+extern "C" {
+#include "include/wl_definitions.h"
+}
+
 class Print;
 
 class Wifi
@@ -16,12 +20,13 @@ private:
     void printNetworksCallback(int8_t numNetworksFound);
 
 protected:
-    Print &out;
+    Print& out;
 
 public:
-    void scan(void);
-    void enable(void);
-    void init(void);
-
-    Wifi(Print &serial);
+    explicit Wifi(Print& serial);
+    void scan();
+    void enable();
+    void init();
+    void connectAccesspoint(const char* ssid, const char* secret);
+    void printConnectstatus(wl_status_t status, Print& out);
 };

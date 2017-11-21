@@ -15,5 +15,5 @@ private:
 public:
     uint8_t sdaPin;
 
-    OneWireBusConfig(uint8_t sdaPin);
+    explicit OneWireBusConfig(uint8_t sdaPin);
 };

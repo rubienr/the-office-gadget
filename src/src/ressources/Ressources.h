@@ -13,6 +13,7 @@
 #include "BuiltIn.h"
 #include "../sensors/Sensors.h"
 #include "../wifi/Wifi.h"
+#include "../web-service/WebService.h"
 
 class Print;
 
@@ -44,6 +45,7 @@ public:
     BuiltIn                builtin;
     Sensors                sensors;
     Wifi                   wifi;
+    WebService             webService;
 
     Ressources();
 

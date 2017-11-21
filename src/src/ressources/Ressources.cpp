@@ -25,7 +25,8 @@ Ressources::Ressources() :
     keyboard(i2cCfg),
     sensors(i2cCfg, oneWireCfg),
     ledStrip(),
-    wifi(earlyInitializer.debugOut())
+    wifi(earlyInitializer.debugOut()),
+    webService(earlyInitializer.debugOut())
 {
 }
 
@@ -39,4 +40,5 @@ void Ressources::init()
     sensors.init();
     ledStrip.init();
     wifi.init();
+    webService.init();
 }

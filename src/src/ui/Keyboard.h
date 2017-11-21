@@ -54,35 +54,17 @@ public:
 class ButtonEventProxy : public ButtonCallback
 {
 protected:
+
 private:
     ButtonEventConsumer& eventConsumer;
     uint8_t buttonId;
+
 public:
-
-    virtual ~ButtonEventProxy()
-    {
-    }
-
-    ButtonEventProxy(uint8_t buttonId, ButtonEventConsumer& eventConsumer) :
-        eventConsumer(eventConsumer),
-        buttonId(buttonId)
-    {
-    }
-
-    virtual void onPress()
-    {
-        eventConsumer.onPress(buttonId);
-    }
-
-    virtual void onRelease(uint16_t elapsedTime)
-    {
-        eventConsumer.onRelease(buttonId, elapsedTime);
-    }
-
-    virtual void onRepeat(uint16_t elapsedTime, uint16_t repeatCount)
-    {
-        eventConsumer.onRepeat(buttonId, elapsedTime, repeatCount);
-    }
+    ButtonEventProxy(uint8_t buttonId, ButtonEventConsumer& eventConsumer);
+    ~ButtonEventProxy() override;
+    void onPress() override;
+    void onRelease(uint16_t elapsedTime) override;
+    void onRepeat(uint16_t elapsedTime, uint16_t repeatCount) override;
 };
 
 class Keyboard : public Adafruit_MPR121, public ButtonEventConsumer
@@ -125,8 +107,8 @@ public:
     ButtonEventProxy button11;
     ButtonEventProxy button12;
 
-    Keyboard(const I2cBusConfig& i2cBus);
-    virtual ~Keyboard();
+    explicit Keyboard(const I2cBusConfig& i2cBus);
+    ~Keyboard() override;
     void init();
     void update();
 };

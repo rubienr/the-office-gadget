@@ -8,8 +8,6 @@
 #include <FastLED.h>
 #include <Arduino.h>
 
-extern CFastLED FastLED;
-
 template<uint8_t DATA_PIN, uint8_t NUM_LEDS>
 class LedStrip
 {
@@ -18,12 +16,12 @@ protected:
 private:
 
 public:
-    uint8_t       brightness;
-    CRGB          leds[NUM_LEDS];
+    uint8_t brightness;
+    CRGB    leds[NUM_LEDS];
 
     CFastLED& fastLED;
 
-    LedStrip(uint8_t brightness = 8) :
+    explicit LedStrip(uint8_t brightness = 8) :
         brightness(brightness),
         fastLED(FastLED)
     {

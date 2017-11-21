@@ -7,7 +7,7 @@
 #include "../ressources/I2cBusConfig.h"
 #include "../ressources/OneWireBusConfig.h"
 
-Sensors::Sensors(const I2cBusConfig& i2cBusConfig, const OneWireBusConfig &oneWireBusConfig) :
+Sensors::Sensors(const I2cBusConfig& i2cBusConfig, const OneWireBusConfig& oneWireBusConfig) :
     i2cBusConfig(i2cBusConfig),
     oneWireBusConfig(oneWireBusConfig),
     oneWire(oneWireBusConfig.sdaPin),
@@ -24,7 +24,7 @@ void Sensors::measureTemperature()
     temperatureSensors.requestTemperaturesByAddress(&temperatureSensor0Address);
 }
 
-float Sensors::getTemperature(uint8_t idx)
+float Sensors::getTemperature()
 {
     return temperatureSensors.getTempC(&temperatureSensor0Address);
 }

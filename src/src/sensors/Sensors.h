@@ -31,7 +31,7 @@ public:
 
     void measureTemperature();
 
-    float getTemperature(uint8_t idx = 0);
+    float getTemperature();
 
     uint16_t currentLux();
 
