@@ -2,6 +2,7 @@
 A very simple tool to visualize things having
 
 * wifi,
+* web service,
 * display,
 * touch keyboard,
 * temperature sensor,
