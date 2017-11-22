@@ -16,7 +16,7 @@ class Wifi
 {
 private:
     static const char* EncryptionTypeToNameTranslation[];
-    const char* encryptionTypeToName(uint8_t encyptionTypeId);
+    const char* encryptionTypeToName(uint8_t encryptionTypeId);
     void printNetworksCallback(int8_t numNetworksFound);
 
 protected:
@@ -27,6 +27,6 @@ public:
     void scan();
     void enable();
     void init();
-    void connectAccesspoint(const char* ssid, const char* secret);
+    bool connectAccesspoint(const char* ssid, const char* secret, uint8_t retry = 3);
     void printConnectstatus(wl_status_t status, Print& out);
 };

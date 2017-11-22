@@ -1,0 +1,5 @@
+{
+  "user": "user_name",
+  "password": "secret",
+  "auth_required": true
+}

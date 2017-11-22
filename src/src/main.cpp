@@ -2,9 +2,9 @@
 // Created by rubienr on 08/11/17.
 //
 
-#include "ressources/Ressources.h"
+#include "ressources/Resources.h"
 
-Ressources r;
+Resources r;
 
 
 // COOLING: How much does the air cool as it rises?
@@ -69,12 +69,6 @@ void setup()
 {
     ESP.wdtDisable();
     r.init();
-    r.builtin.ledOff();
-    r.displays.display0.println("connecting to <ssid>...");
-    r.displays.display0.displayBuffer();
-    r.wifi.connectAccesspoint("ssid", "secret");
-    r.displays.display0.println("done");
-    r.displays.display0.displayBuffer();
     ESP.wdtEnable(0);
 }
 

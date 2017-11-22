@@ -12,9 +12,9 @@ Esp::Esp(Print& out) :
 {
 }
 
-void Esp::init(bool earaseConfigutation)
+void Esp::init(bool eraseConfiguration)
 {
-    if (earaseConfigutation)
+    if (eraseConfiguration)
     {
         ESP.eraseConfig();
     }

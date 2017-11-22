@@ -26,11 +26,11 @@ Wifi::Wifi(Print& out) :
 {
 }
 
-const char* Wifi::encryptionTypeToName(uint8_t encyptionTypeId)
+const char* Wifi::encryptionTypeToName(uint8_t encryptionTypeId)
 {
-    if (encyptionTypeId < sizeof(Wifi::EncryptionTypeToNameTranslation))
+    if (encryptionTypeId < sizeof(Wifi::EncryptionTypeToNameTranslation))
     {
-        return Wifi::EncryptionTypeToNameTranslation[encyptionTypeId];
+        return Wifi::EncryptionTypeToNameTranslation[encryptionTypeId];
     }
     return "-";
 }
@@ -49,7 +49,7 @@ void Wifi::printNetworksCallback(int8_t numNetworksFound)
         int32_t rssi, channel;
         bool isHidden;
 
-        if (false == WiFi.getNetworkInfo(static_cast<int8_t>(i), ssid, encryptionType, rssi, bssid, channel, isHidden))
+        if (false == WiFi.getNetworkInfo(static_cast<uint8_t>(i), ssid, encryptionType, rssi, bssid, channel, isHidden))
         {
             continue;
         }
@@ -101,7 +101,7 @@ void Wifi::scan()
     out.println("\n");
 }
 
-void Wifi::connectAccesspoint(const char* ssid, const char* secret)
+bool Wifi::connectAccesspoint(const char* ssid, const char* secret, uint8_t retry)
 {
     if (WiFi.status() != WL_CONNECTED)
     {
@@ -109,13 +109,25 @@ void Wifi::connectAccesspoint(const char* ssid, const char* secret)
         WiFi.disconnect();
         wl_status_t status = WiFi.begin(ssid, secret);
         printConnectstatus(status, out);
-        while (WiFi.status() != WL_CONNECTED)
+
+        while ((WiFi.status() != WL_CONNECTED) && (retry-- > 0))
         {
-            delay(500);
+            delay(250);
             out.print(".");
         }
-        out.printf("ip %s\n", WiFi.localIP().toString().c_str());
+
+        if ((WiFi.status() == WL_CONNECTED))
+        {
+            out.printf("wifi connected, ip %s\n", WiFi.localIP().toString().c_str());
+            return true;
+        }
+        else
+        {
+            out.println("failed to connect wifi");
+        }
+        return false;
     }
+    return true;
 }
 
 void Wifi::printConnectstatus(wl_status_t status, Print& out)

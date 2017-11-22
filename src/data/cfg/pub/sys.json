@@ -1,0 +1,18 @@
+{
+  "entity": {
+    "organization": "ACME",
+    "organizational_unit": "The Office",
+    "location": "Hintertupfing 8",
+    "postmaster": "john.doe@acme.com"
+  },
+  "network": {
+    "host_name": "the-office-gadget",
+    "ip_address": "",
+    "ntp_server": "0.europe.pool.ntp.org",
+    "time_zone": "Europe/Vienna"
+  },
+  "region": {
+    "date_format": "%d.%m.%y",
+    "time_format": "%H:%m"
+  }
+}

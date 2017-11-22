@@ -14,7 +14,7 @@ protected:
 
 public:
     explicit Esp(Print& serial);
-    void init(bool earaseConfigutation = false);
+    void init(bool eraseConfiguration = false);
     void printInfo();
 };
 

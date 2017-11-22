@@ -28,7 +28,7 @@ public:
     Print& debugOut();
 };
 
-class Ressources
+class Resources
 {
 protected:
 
@@ -47,7 +47,7 @@ public:
     Wifi                   wifi;
     WebService             webService;
 
-    Ressources();
+    Resources();
 
     void init();
 };

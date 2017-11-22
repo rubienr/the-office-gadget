@@ -3,9 +3,9 @@
 //
 
 #include "Keyboard.h"
-#include "../ressources/Ressources.h"
+#include "../ressources/Resources.h"
 
-extern Ressources r;
+extern Resources r;
 
 const uint16_t Keyboard::OnHoldDurationMs = 500;
 const uint16_t Keyboard::OnHoldRepeatMs   = 250;
