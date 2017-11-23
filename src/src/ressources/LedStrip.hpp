@@ -29,7 +29,7 @@ public:
 
     void init()
     {
-        fastLED.addLeds<WS2811, DATA_PIN, GRB>(leds, NUM_LEDS);
+        fastLED.addLeds<WS2811, DATA_PIN, GRB>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
         fastLED.setBrightness(brightness);
         pinMode(DATA_PIN, OUTPUT);
     }

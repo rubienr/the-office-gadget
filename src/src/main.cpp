@@ -3,6 +3,7 @@
 //
 
 #include "ressources/Resources.h"
+#include "config/WifiConfig.hpp"
 
 Resources r;
 
@@ -80,7 +81,9 @@ void loop()
     r.keyboard.update();
 
     r.displays.display0.clear();
-    r.displays.display0.print("The office gadget!\n");
+
+    config::wifi::FromToJson wifiConfig;
+    r.displays.display0.printf("The office gadget! %d\n", wifiConfig.getNumFields());
     r.displays.display0.print("temperature ");
     r.displays.display0.print(r.sensors.getTemperature());
     r.displays.display0.print("°C\n");
