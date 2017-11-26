@@ -6,47 +6,65 @@
 
 #include "ConfigFromToJson.hpp"
 
-namespace config {
-namespace wifi {
-namespace fields {
-
-struct Ssid : public Uint8FromToJsonField
+class WifiConfiguration
 {
-    Ssid() :
-        Uint8FromToJsonField("ssid")
-    {
-    }
-};
+public:
 
-struct Password : public Uint8FromToJsonField
-{
-    Password() :
-        Uint8FromToJsonField("password")
+    struct Enabled : public BoolFromToJsonField
     {
-    }
-};
+        static const uint8_t MaxBooleanStringLength = 5;
 
-struct ConnectRetry : public Uint8FromToJsonField
-{
-    ConnectRetry() :
-        Uint8FromToJsonField("connect_retry")
+        Enabled() :
+            BoolFromToJsonField("isEnabled", MaxBooleanStringLength)
+        {
+        }
+    };
+
+    struct Ssid : public StringFromToJsonField
     {
-    }
-};
+        static const uint8_t MaxSsidStringLength = 32;
 
-struct TimeoutMs : public Uint8FromToJsonField
-{
-    TimeoutMs() :
-        Uint8FromToJsonField("timeout_ms")
+        Ssid() :
+            StringFromToJsonField("ssid", MaxSsidStringLength)
+        {
+        }
+    };
+
+    struct Password : public StringFromToJsonField
     {
-    }
-};
-}
+        static const uint8_t MaxPasswordLength = 64;
 
-typedef FromToJsonCompositum<
-    fields::TimeoutMs,
-    fields::Password,
-    fields::ConnectRetry,
-    fields::TimeoutMs> FromToJson;
-}
-}
+        Password() :
+            StringFromToJsonField("pwd", MaxPasswordLength)
+        {
+        }
+    };
+
+    struct ConnectRetry : public Uint8FromToJsonField
+    {
+        static const uint8_t MaxUint8StringLength = 3;
+
+        ConnectRetry() :
+            Uint8FromToJsonField("connectRetry", MaxUint8StringLength)
+        {
+        }
+    };
+
+    struct TimeoutMs : public Uint16FromToJsonField
+    {
+        static const uint8_t MaxUint16StringLength = 5;
+
+        TimeoutMs() :
+            Uint16FromToJsonField("timeoutMs", MaxUint16StringLength)
+        {
+        }
+    };
+
+    typedef FromToJson<
+        WifiConfiguration::Enabled,
+        WifiConfiguration::Ssid,
+        WifiConfiguration::Password,
+        WifiConfiguration::TimeoutMs,
+        WifiConfiguration::ConnectRetry
+    > Data;
+};

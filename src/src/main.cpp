@@ -75,15 +75,44 @@ void setup()
 
 void loop()
 {
+    Serial.println("loop");
     Fire2012WithPalette();
     r.ledStrip.fastLED.show();
     r.sensors.measureTemperature();
     r.keyboard.update();
-
     r.displays.display0.clear();
 
-    config::wifi::FromToJson wifiConfig;
-    r.displays.display0.printf("The office gadget! %d\n", wifiConfig.getNumFields());
+    WifiConfiguration::Data wifiConfig;
+
+    WifiConfiguration::Enabled     & en    = wifiConfig.data.getField<WifiConfiguration::Enabled>();
+    WifiConfiguration::Ssid        & ssid  = wifiConfig.data.getField<WifiConfiguration::Ssid>();
+    WifiConfiguration::Password    & pwd   = wifiConfig.data.getField<WifiConfiguration::Password>();
+    WifiConfiguration::TimeoutMs   & toMs  = wifiConfig.data.getField<WifiConfiguration::TimeoutMs>();
+    WifiConfiguration::ConnectRetry& retry = wifiConfig.data.getField<WifiConfiguration::ConnectRetry>();
+
+    en.value    = true;
+    ssid.value  = "diss";
+    pwd.value   = "drowssap";
+    toMs.value  = 42;
+    retry.value = 7;
+    wifiConfig.toJson();
+
+    en.value    = false;
+    ssid.value  = "0xDEADBEEF";
+    pwd.value   = "0xB00BS";
+    toMs.value  = 0;
+    retry.value = 0;
+    wifiConfig.fromJson();
+
+    r.displays.display0.printf("The Gadget! it=%d en=%d\n", WifiConfiguration::Data::itemsCount(), en.value);
+    r.displays.display0.printf("%s = %s\n", ssid.name.c_str(), ssid.value.c_str()); // expect "diss"
+    r.displays.display0.printf("%s = %s\n", pwd.name.c_str(), pwd.value.c_str());   // expect "drowssap"
+    r.displays.display0.printf("%s = %d\n", toMs.name.c_str(), toMs.value);         // expect 42
+    r.displays.display0.printf("%s = %d\n", retry.name.c_str(), retry.value);       // expect 7
+    r.displays.display0.displayBuffer();
+
+    /*
+    r.displays.display0.printf("The gadget! t=%d i=%d u=%d\n", t.itemsCount(), 0,0);
     r.displays.display0.print("temperature ");
     r.displays.display0.print(r.sensors.getTemperature());
     r.displays.display0.print("°C\n");
@@ -92,13 +121,16 @@ void loop()
     r.displays.display0.printf("\nip-addr: %s\n", WiFi.localIP().toString().c_str());
     r.wifi.printConnectstatus(WiFi.status(), r.displays.display0);
     r.displays.display0.displayBuffer();
+    */
 
     r.displays.display1.clear();
     r.displays.display1.print("Keyboard Events\n");
     r.displays.display1.printf("pressed  %d\n", r.keyboard.buttonPressed);
     r.displays.display1.printf("released %d\n", r.keyboard.buttonReleased);
     r.displays.display1.printf("repeated %d\n", r.keyboard.buttonRepeated);
-    r.displays.display1.printf("delay    %d count %d\n", r.keyboard.buttonElapsedTime, r.keyboard.buttonEventCount);
+    r.displays.display1.printf("delay    %d count %d\n",
+                               r.keyboard.buttonElapsedTime,
+                               r.keyboard.buttonEventCount);
     r.displays.display1.displayBuffer();
 
     r.webService.handleClient();
